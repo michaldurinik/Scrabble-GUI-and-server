@@ -8,6 +8,12 @@
 * If you **ARE** using SSH `git remote add origin git@gitlab.computing.dcu.ie:durinim2/scrabble-game.git`
 * `git pull origin node`
 
+### good read about python networking: https://realpython.com/python-sockets/
+
+## how to run:
+1. run server.py in one terminal
+2. run client.py in another terminal
+
 ## Instructions for merging your work into master
 
 ### Preconditions
