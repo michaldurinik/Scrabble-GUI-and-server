@@ -1,14 +1,13 @@
 from Tile import Tile
 
 
-class Square(Tile):
-    def __init__(self, letter="E", value=1, colour="white", tile_multiplier=0, word_multiplier=0, has_tile=None,
+class Square:
+    def __init__(self, colour="white", tile_multiplier=0, word_multiplier=0, has_tile=None,
                  position=[0, 0]):
-        super().__init__(letter, value)
         self.colour = colour
         self.tile_multiplier = tile_multiplier
         self.word_multiplier = word_multiplier
-        self.hasTile = has_tile
+        self.has_tile = has_tile
         self.position = position
 
         #   Each individual square will be one of possible color types,
@@ -32,15 +31,18 @@ class Square(Tile):
     def get_tile(self):
         #   if square is occupied by tile, it will return tile object where we
         #   can access it's attributes
-        return super()
+        if self.is_occupied():
+            return self.has_tile
 
-    def place_tile(self):
-        self.hasTile = Tile
+    def place_tile(self, tile):
+        self.has_tile = tile
 
     def get_letter_score(self):
         #   Will return total score for the square, ie.
         #   value of the tile placed multiplied by x1, x2 or x3.
-        return super().get_value() * self.word_multiplier
+        if self.is_occupied():
+            line = ("---" * self.size + "-\n")
+                return self.has_tile.get_value() * self.word_multiplier
 
     def get_word_multiplier(self):
         #   Return word multiplier x1, x2, x3, which will be used to
@@ -48,16 +50,24 @@ class Square(Tile):
         return self.word_multiplier
 
     def __str__(self):
+        tile = "None"
+        if self.is_occupied():
+            tile = self.get_tile().__str__() # string/print version of Tile object
         return ("colour: " + self.colour + "\n" +
                 "t.mult: " + str(self.tile_multiplier) + "\n" +
                 "w.mult: " + str(self.word_multiplier) + "\n" +
-                "Tile: " + super().__str__() + "\n" +
+                "Tile: " + tile + "\n" +
                 "Position: " + str(self.position[0]) + " " + str(self.position[1]))
 
 
 def main():
+    t = Tile()
     sq = Square()
     print(sq)
+    print("#############")
+    sq.place_tile(t)
+    print(sq)
+
 
 
 if __name__ == "__main__":
