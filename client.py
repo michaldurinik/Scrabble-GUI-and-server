@@ -53,4 +53,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print(pickle.loads(data))  # or print actual matrix
         print("count:", count)
         count += 1
-        sleep(5)
+        sleep(60)

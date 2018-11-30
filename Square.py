@@ -42,7 +42,7 @@ class Square:
         #   value of the tile placed multiplied by x1, x2 or x3.
         if self.is_occupied():
             line = ("---" * self.size + "-\n")
-                return self.has_tile.get_value() * self.word_multiplier
+            return self.has_tile.get_value() * self.word_multiplier
 
     def get_word_multiplier(self):
         #   Return word multiplier x1, x2, x3, which will be used to
