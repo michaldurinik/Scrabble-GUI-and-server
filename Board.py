@@ -23,11 +23,14 @@ class Board(Square):
         #   tile into correct position on the board.
         return
 
+    def make_board(self):
+        pass
+
     def __str__(self):
         output = ""
         for arr in self.square_array:
             for sq in arr:
-                output += (sq.get_tile(self).check_letter() + ":" + str(sq.get_tile(self).check_value()) + " ")
+                output += (sq.get_tile(self).get_letter() + ":" + str(sq.get_tile(self).get_value()) + " ")
             output += "\n"
         return output
 

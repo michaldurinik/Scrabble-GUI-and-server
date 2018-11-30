@@ -40,7 +40,7 @@ class Square(Tile):
     def get_letter_score(self):
         #   Will return total score for the square, ie.
         #   value of the tile placed multiplied by x1, x2 or x3.
-        return super().check_value() * self.word_multiplier
+        return super().get_value() * self.word_multiplier
 
     def get_word_multiplier(self):
         #   Return word multiplier x1, x2, x3, which will be used to
