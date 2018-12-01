@@ -16,7 +16,11 @@ class Tile:
         return self.letter
 
     def __str__(self):
-        return self.letter + ": " + str(self.value)
+        output = self.letter
+        if len(str(self.value)) == 1:
+            output += " "
+        output += str(self.value)
+        return output
 
 
 def main():

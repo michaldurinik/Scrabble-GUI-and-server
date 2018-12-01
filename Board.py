@@ -1,40 +1,53 @@
 from Square import Square
 from Tile import Tile
-from copy import deepcopy
+from random import randint
+
 
 class Board(Square):
 
-    def __init__(self, colour="white", tile_multiplier=0, word_multiplier=0, has_tile=None,
-                 position=[0, 0], size=15):
-        super().__init__(colour="white", tile_multiplier=0, word_multiplier=0, has_tile=None,
-                 position=[0, 0])
+    def __init__(self, size=15):
+        super().__init__()
         self.size = size
         self.square_array = [[Square() for i in range(self.size)] for j in range(self.size)]
 
-        sq = self.square_array[0][0]
-        #print("empty square:", sq.get_tile())
-
-        t = Tile()
-        sq.place_tile(t)
-        t2 = Tile("Q", 10)
-        self.square_array[5][11].place_tile(t2)
-
-        #   Size of the board correspond to how many rows and
-        #   columns it will have.
+        #   Size of the board correspond to how many rows and columns it will have.
         #   All the squares will be held in an arrays, which will create a matrix.
 
-    def get_square(self):
+    def __iter__(self):
+        for row in self.square_array:
+            for square in row:
+                yield square
+
+    def get_square(self, coords):
         #   Based on square's x, y coordinates it will return
         #   corresponding square.
-        return
+        x = coords[0]
+        y = coords[1]
+        if x < self.size and y < self.size:
+            return self.square_array[x][y]
 
-    def place_tile(self):
-        #   Based on square's x, y coordinates it will place
+    def place_tile(self, coords, tile):
+        #   coords must be tuple or an array of length 2
+        #   Based on square's x, y coordinates, it will place
         #   tile into correct position on the board.
-        return
+        x = coords[0]
+        y = coords[1]
+        if x < self.size and y < self.size:
+            self.square_array[x][y].place_tile(tile)
 
     def make_board(self):
-        pass
+        bonus_square_colours = ["light_blue", "dark_blue", "light_red", "dark_red"]
+        double_letter = randint(15, 25)  # 20
+        triple_letter = randint(9, 15)   # 12
+        double_word =   randint(12, 20)  # 16
+        triple_word =    randint(6, 10)  # 8
+
+        for idx, num_of_bonus_squares in enumerate([double_letter, triple_letter, double_word, triple_word]):
+            while num_of_bonus_squares:
+                random_square = self.square_array[randint(0, self.size - 1)][randint(0, self.size - 1)]
+                if random_square.colour == "default":
+                    random_square.colour = bonus_square_colours[idx]
+                    num_of_bonus_squares -= 1
 
     def __str__(self):
         output = ""
@@ -43,10 +56,7 @@ class Board(Square):
             output += line
             for sq in arr:
                 if sq.is_occupied():
-                    value = str(sq.get_tile().get_value())
-                    if len(value) == 1:
-                        value = " " + value
-                    output += ("|" + sq.get_tile().get_letter() + value)
+                    output += ("|" + sq.get_tile().__str__())
                 else:
                     output += "|   "
             output += "|\n"
@@ -55,8 +65,19 @@ class Board(Square):
 
 
 def main():
+    t1 = Tile("R", 1)
+    t2 = Tile("X", 8)
+    t3 = Tile("Q", 10)
     b = Board()
     print(b)
+
+    b.place_tile((10, 10), t1)
+    b.place_tile([5, 5], t2)
+    b.place_tile([6, 6], t3)
+    print(b)
+
+    print(b.get_square([3, 3]))
+    print(b.get_square([10, 10]))
 
 
 if __name__ == "__main__":

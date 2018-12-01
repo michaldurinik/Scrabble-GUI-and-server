@@ -2,7 +2,7 @@ from Tile import Tile
 
 
 class Square:
-    def __init__(self, colour="white", tile_multiplier=0, word_multiplier=0, has_tile=None,
+    def __init__(self, colour="default", tile_multiplier=1, word_multiplier=1, has_tile=None,
                  position=[0, 0]):
         self.colour = colour
         self.tile_multiplier = tile_multiplier
@@ -41,7 +41,6 @@ class Square:
         #   Will return total score for the square, ie.
         #   value of the tile placed multiplied by x1, x2 or x3.
         if self.is_occupied():
-            line = ("---" * self.size + "-\n")
             return self.has_tile.get_value() * self.word_multiplier
 
     def get_word_multiplier(self):
@@ -51,23 +50,25 @@ class Square:
 
     def __str__(self):
         tile = "None"
+        line = "--------------"
         if self.is_occupied():
-            tile = self.get_tile().__str__() # string/print version of Tile object
-        return ("colour: " + self.colour + "\n" +
+            tile = self.get_tile().__str__()  # string/print version of Tile object
+
+        return (line + "\n" +
+                "colour: " + self.colour + "\n" +
                 "t.mult: " + str(self.tile_multiplier) + "\n" +
                 "w.mult: " + str(self.word_multiplier) + "\n" +
                 "Tile: " + tile + "\n" +
-                "Position: " + str(self.position[0]) + " " + str(self.position[1]))
+                "Position: " + str(self.position[0]) + " " + str(self.position[1]) + "\n" +
+                line)
 
 
 def main():
     t = Tile()
     sq = Square()
     print(sq)
-    print("#############")
     sq.place_tile(t)
     print(sq)
-
 
 
 if __name__ == "__main__":
