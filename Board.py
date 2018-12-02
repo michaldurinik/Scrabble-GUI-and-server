@@ -25,17 +25,10 @@ class Board(Square):
 
     def __getitem__(self, coords):
         #   support for indexing
-        #   usage: single int for iterative position
+        #   usage: single int for iterative position or tuple
         #   board[80], board[5][13]
-        if isinstance(coords, int):
-            x = coords // self.size
-            y = coords % self.size
-        else:
-            x = coords[0]
-            y = coords[1]
-
-        if x < self.size and y < self.size:
-            return self.square_array[x][y]
+        x, y = self.parse_coords(coords)
+        return self.square_array[x][y]
 
     def parse_coords(self, coords):
         if isinstance(coords, int):
