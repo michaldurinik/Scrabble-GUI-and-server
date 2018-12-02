@@ -10,6 +10,11 @@ class Board(Square):
         self.size = size
         self.square_array = [[Square() for i in range(self.size)] for j in range(self.size)]
 
+        for row in range(self.size):
+            for col in range(self.size):
+                sq = self.square_array[row][col]
+                sq.position = [row, col]
+
         #   Size of the board correspond to how many rows and columns it will have.
         #   All the squares will be held in an arrays, which will create a matrix.
 
@@ -18,25 +23,51 @@ class Board(Square):
             for square in row:
                 yield square
 
-    def get_square(self, coords):
-        #   Based on square's x, y coordinates it will return
-        #   corresponding square.
-        x = coords[0]
-        y = coords[1]
+    def __getitem__(self, coords):
+        #   support for indexing
+        #   usage: single int for iterative position
+        #   board[80], board[5][13]
+        if isinstance(coords, int):
+            x = coords // self.size
+            y = coords % self.size
+        else:
+            x = coords[0]
+            y = coords[1]
+
         if x < self.size and y < self.size:
             return self.square_array[x][y]
+
+    def parse_coords(self, coords):
+        if isinstance(coords, int):
+            x = coords // self.size
+            y = coords % self.size
+        else:
+            x = coords[0]
+            y = coords[1]
+
+        if x < self.size and y < self.size:
+            return x, y
+
+    def get_square(self, coords):
+        #   usage: single int for iterative position or tuple for x, y
+        #   board[80], board[5][13]
+        x, y = self.parse_coords(coords)
+        return self.square_array[x][y]
 
     def place_tile(self, coords, tile):
         #   coords must be tuple or an array of length 2
         #   Based on square's x, y coordinates, it will place
         #   tile into correct position on the board.
-        x = coords[0]
-        y = coords[1]
-        if x < self.size and y < self.size:
-            self.square_array[x][y].place_tile(tile)
+        x, y = self.parse_coords(coords)
+        self.square_array[x][y].place_tile(tile)
 
     def make_board(self):
+        #   use with newly created instance of board only (blank boards)
+
         bonus_square_colours = ["light_blue", "dark_blue", "light_red", "dark_red"]
+        bonus_square_values = [2, 3, 2, 3]
+
+        #   creating random amount of bonus squares
         double_letter = randint(15, 25)  # 20
         triple_letter = randint(9, 15)   # 12
         double_word =   randint(12, 20)  # 16
@@ -45,7 +76,15 @@ class Board(Square):
         for idx, num_of_bonus_squares in enumerate([double_letter, triple_letter, double_word, triple_word]):
             while num_of_bonus_squares:
                 random_square = self.square_array[randint(0, self.size - 1)][randint(0, self.size - 1)]
+
+                #   changing colour and multipliers for square
                 if random_square.colour == "default":
+                    multiplier = idx % 2
+                    if idx // 2:
+                        random_square.word_multiplier = bonus_square_values[multiplier]
+                    else:
+                        random_square.tile_multiplier = bonus_square_values[multiplier]
+
                     random_square.colour = bonus_square_colours[idx]
                     num_of_bonus_squares -= 1
 
@@ -58,7 +97,19 @@ class Board(Square):
                 if sq.is_occupied():
                     output += ("|" + sq.get_tile().__str__())
                 else:
-                    output += "|   "
+                    if sq.colour != "default":
+                        bonus = ""
+                        if sq.tile_multiplier == 2:
+                            bonus = "dl "
+                        elif sq.tile_multiplier == 3:
+                            bonus = "tl "
+                        elif sq.word_multiplier == 2:
+                            bonus = "dw "
+                        elif sq.word_multiplier == 3:
+                            bonus = "tw "
+                        output += ("|" + bonus)
+                    else:
+                        output += "|   "
             output += "|\n"
         output += line
         return output
@@ -68,16 +119,29 @@ def main():
     t1 = Tile("R", 1)
     t2 = Tile("X", 8)
     t3 = Tile("Q", 10)
+    print("blank board, no tiles")
     b = Board()
     print(b)
 
     b.place_tile((10, 10), t1)
     b.place_tile([5, 5], t2)
     b.place_tile([6, 6], t3)
+    print("board with few tiles placed")
     print(b)
 
+    print("details of individual squares")
     print(b.get_square([3, 3]))
     print(b.get_square([10, 10]))
+
+    print("#############################")
+    print("creating random board state for new game")
+    b2 = Board()
+    b2.make_board()
+    print("printing first 20 squares")
+    for i in range(20):
+        print(b2[i])
+    b2.place_tile((13, 14), t3)
+    print(b2)
 
 
 if __name__ == "__main__":
