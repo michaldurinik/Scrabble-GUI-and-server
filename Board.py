@@ -57,7 +57,7 @@ class Board(Square):
     def make_board(self):
         #   use with newly created instance of board only (blank boards)
 
-        bonus_square_colours = ["light_blue", "dark_blue", "light_red", "dark_red"]
+        bonus_square_colours = ["doubleL", "tripleL", "doubleW", "tripleW"]
         bonus_square_values = [2, 3, 2, 3]
 
         #   creating random amount of bonus squares
