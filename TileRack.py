@@ -1,11 +1,11 @@
 from Tile import Tile
 
 
-class TileRack:
+class TileRack(Tile):
 
-    def __init__(self, rack_size=0, rack_array=[Tile]):  # array of Tile objects
+    def __init__(self, rack_size=7):  # array of Tile objects
         self.rack_Size = rack_size
-        self.rack_array = rack_array
+        self.rack_array = [None for i in range(rack_size)]
 
         #   Size of tile rack will be always 7 while there are
         #   tiles remaining in TileBag.
@@ -13,11 +13,11 @@ class TileRack:
 
     def is_full(self):
         #   Check if the rack has all 7 tiles in it.
-        return True
+        return len(self.rack_array) == 7
 
     def is_empty(self):
         #   Check if the rack is empty, if there are no tiles in the rack.
-        return True
+        return len(self.rack_array) == 0
 
     def take_tile(position):  # index of Tile in rackArray
         #   When player play their tile onto the board, it will be

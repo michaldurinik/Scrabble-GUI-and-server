@@ -1,0 +1,9 @@
+after board is received , copy will be created
+on that copy all moves will be played, tiles removed etc
+after playing move, if it is rejected or reset by player, 
+original board will get pulled.
+
+in square, implement remove tile
+
+implement the rack as square array, similar to board
+
