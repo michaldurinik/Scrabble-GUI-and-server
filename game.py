@@ -2,6 +2,7 @@ from random import *
 import pygame
 from Board import Board
 from Tile import Tile
+from Player import Player
 
 b = Board()
 # print(b)
@@ -36,7 +37,7 @@ tiles = {'t1': Tile("A", 1),
         't27': Tile('BL', 0),
         }
 
-tile = ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't12', 't13', 't14', 't15', 't16', 't17', 't18', 't19', 't20', 't21', 't22', 't23', 't24', 't25', 't26', 't27']
+tile = ['t1', 't27', 't27', 't27', 't27', 't27', 't27', 't27', 't27', 't27', 't27', 't27', 't2', 't3', 't27', 't4', 't5', 't27', 't6', 't27', 't7', 't8', 't27', 't9', 't10', 't11', 't27', 't12', 't27', 't13', 't14', 't27', 't15', 't16', 't17', 't18', 't19', 't20', 't21', 't22', 't23', 't24', 't25', 't26', 't27']
 for i in range(15):
     for j in range(15):
         b.place_tile((i, j), tiles[choice(tile)])
@@ -64,6 +65,13 @@ display_width = 1200
 display_height = 734
 rack_x =  (display_width * 0.0745) 
 rack_y =  (display_height * 0.73)
+player_1_score = 0
+player_2_score = 780
+player_3_score = 50
+player_4_score = 100
+remaining_tiles = 25
+
+
 
 
 
@@ -102,20 +110,21 @@ tile_dict = {'A': pygame.image.load('./images/A_1.png'),
              'X': pygame.image.load('./images/X_1.png'),
              'Y': pygame.image.load('./images/Y_1.png'),
              'Z': pygame.image.load('./images/Z_1.png'),
-             'BL': pygame.image.load('./images/blank_square.png'),
-             'doubleL': pygame.image.load('./images/blank_square_3.png'),
-             'tripleL': pygame.image.load('./images/blank_square_5.png'),
-             'doubleW': pygame.image.load('./images/blank_square_4.png'),
-             'tripleW': pygame.image.load('./images/blank_square_6.png'),
+             'BL': pygame.image.load('./images/blank_square_2.png'),
+             'doubleL': pygame.image.load('./images/double_letter.png'),
+             'tripleL': pygame.image.load('./images/double_word.png'),
+             'doubleW': pygame.image.load('./images/triple_letter.png'),
+             'tripleW': pygame.image.load('./images/triple_word.png'),
              'default': pygame.image.load('./images/blank_square_2.png'),
              }
 
 SCREEN = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('Scrabble')
 pygame.display.set_icon(pygame.image.load('images/icon_scrabble.png'))
-background = pygame.image.load('./images/background.png')
+background = pygame.image.load('./images/background_2.png')
+# background = (18,131,86)
 blank_board = pygame.image.load('./images/blank_board.png')
-blank_square = pygame.image.load('./images/blank_square_1.png')
+blank_square = pygame.image.load('./images/blank_square_2.png')
 double_letter = pygame.image.load('./images/double_letter.png')
 triple_letter = pygame.image.load('./images/triple_letter.png')
 
@@ -125,8 +134,9 @@ LEFT = 1
 running = True
 finished = False
 # clock = pygame.time.Clock()
-def screen_background(x,y):
-    SCREEN.blit(pygame.transform.scale(background, (display_width,display_height)), (x,y)) #
+def screen_background():
+    SCREEN.blit(pygame.transform.scale(background, (display_width,display_height)), (0,0))
+    # SCREEN.fill(background)
 
 def letter_rack(x,y):
     x =  (display_width * 0.0745) 
@@ -135,44 +145,102 @@ def letter_rack(x,y):
         SCREEN.blit(pygame.transform.scale(tile_dict[test_rack[i][0]], (SQUARE_SIDE,SQUARE_SIDE)), (x,y))
         x = x + 60
 
-def initial_board(board):
-    x =  (display_width * 0.48)
-    y =  (display_height - 714)
-    for square in board:
-        sq_colour = square.get_colour()
-        # print(sq_colour)
-        pos = square.get_position()
-        dy = y + (40 * pos[0])
-        dx = x + (40 * pos[1])
-        if square.is_occupied():
-            letter = square.get_tile().get_letter()
-            SCREEN.blit(pygame.transform.scale(tile_dict[sq_colour], (SQUARE_SIDE,SQUARE_SIDE)), (dx,dy))
-        else:
-            SCREEN.blit(pygame.transform.scale(tile_dict[sq_colour], (SQUARE_SIDE,SQUARE_SIDE)), (dx,dy))
-        
+
 def in_play_board(board):
     x =  (display_width * 0.48)
     y =  (display_height - 714)
     for square in board:
         sq_colour = square.get_colour()
-        # print(sq_colour)
         pos = square.get_position()
-        # print(pos)
-        # if x < 1200:
         dy = y + (40 * pos[0])
         dx = x + (40 * pos[1])
         if square.is_occupied():
-            letter = square.get_tile().get_letter()
-            SCREEN.blit(pygame.transform.scale(tile_dict[letter], (SQUARE_SIDE,SQUARE_SIDE)), (dx,dy))
-        else:
-            SCREEN.blit(pygame.transform.scale(blank_square_2, (SQUARE_SIDE,SQUARE_SIDE)), (dx,dy))
+            if sq_colour == 'default':
+                # print('occupied')
+                letter = square.get_tile().get_letter()
+                SCREEN.blit(pygame.transform.scale(tile_dict[letter], (SQUARE_SIDE,SQUARE_SIDE)), (dx,dy))
+                # print(sq_colour)
+            else:
+                # print('unoccupied')
+                # if sq_colour != 'default':
+                SCREEN.blit(pygame.transform.scale(tile_dict[sq_colour], (SQUARE_SIDE,SQUARE_SIDE)), (dx,dy))
 
-while running:
-    initial_board(b)
+def score_board():
+    items = ('SCORE BOARD','PLAYER  A', 'PLAYER  B', 'PLAYER  C', 'PLAYER  D', 'TILES REMAINING', 'SWAP','SKIP','QUIT','CONFIRM')
+    x = 50
+    y = 20
+    i = 0
+    for letter in items[0]:
+        dx = x + (40 * i)
+        if letter == ' ':
+            pass
+        else:
+            SCREEN.blit(pygame.transform.scale(tile_dict[letter], (SQUARE_SIDE,SQUARE_SIDE)), (dx,y))
+        i+=1
+      
+    x = 50
+    y = 100
+    i = 0
+    for player in items[1:5]:
+        
+        j = 0
+        dy = y + (70 * i)
+        for letter in player:
+            dx = x + (40 * j)
+            if letter == ' ':
+                pass
+            else:
+                SCREEN.blit(pygame.transform.scale(tile_dict[letter], (SQUARE_SIDE,SQUARE_SIDE)), (dx,dy))
+            
+            j+=1
+        i+=1
+
+    x = 50
+    y = 420
+    i = 0
+    for letter in items[-5]:
+        dx = x + (40 * i)
+        if letter == ' ':
+            y = 460
+            i = -1
+
+        else:
+            SCREEN.blit(pygame.transform.scale(tile_dict[letter], (SQUARE_SIDE,SQUARE_SIDE)), (dx,y))
+        i+=1
+
+    x = 90
+    y = 640
+    i = 0 
+    j = 0   
+    for button in items[-4:]:
+        dx = x + (100 * j)
+        i = 0 
+        for letter in button:
+            
+            SCREEN.blit(pygame.transform.scale(tile_dict[letter], (SQUARE_SIDE,SQUARE_SIDE)), (dx,y))
+            dx = x + (40 * i)
+            i+=1
+        j+=1
+
+    
+    pygame.font.init() # you have to call this at the start, 
+                   # if you want to use this module.
+    myfont = pygame.font.SysFont('Times New Roman', 50)
+    textsurface = myfont.render('{:^d}'.format(player_1_score), False, (0, 0, 0))
+    SCREEN.blit(textsurface,(450,90))
+    textsurface = myfont.render('{:^d}'.format(player_2_score), False, (0, 0, 0))
+    SCREEN.blit(textsurface,(450,159))
+    textsurface = myfont.render('{:^d}'.format(player_3_score), False, (0, 0, 0))
+    SCREEN.blit(textsurface,(450,230))
+    textsurface = myfont.render('{:^d}'.format(player_4_score), False, (0, 0, 0))
+    SCREEN.blit(textsurface,(450,299))
+    textsurface = myfont.render('{:^d}'.format(remaining_tiles), False, (0, 0, 0))
+    SCREEN.blit(textsurface,(450,452))
+
+while running:      
+    # initial_board(b)
     while not finished:
         pos=pygame.mouse.get_pos()
-        # print(pos)
-
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
@@ -182,7 +250,6 @@ while running:
                 finished = True
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-            # Set the x, y postions of the mouse click
                 press = pygame.mouse.get_pos()
 
                 if 90 + 40 > press[0] > 90 and 535 + 40 > press[1] > 535:
@@ -208,14 +275,16 @@ while running:
 
             if event.type == pygame.MOUSEBUTTONUP:
                 release = pygame.mouse.get_pos()
-                print('Mouse button released')
+                print('Mouse button released', release)
 
-            screen_background(x,y)
-           
+            screen_background()
+            score_board()
             # initial_board(b)
             letter_rack(x,y)
 
             in_play_board(b)
+            # buttons()
+
 
         
             pygame.display.update()
