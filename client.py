@@ -38,6 +38,7 @@ def recvall(sock, n):
 
 
 board = Board()  # our 100x100 matrix test data
+board.make_board()
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
 
@@ -53,4 +54,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print(pickle.loads(data))  # or print actual matrix
         print("count:", count)
         count += 1
-        sleep(60)
+        sleep(5)

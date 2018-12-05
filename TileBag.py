@@ -25,16 +25,19 @@ class TileBag(Tile):
         if not self.is_empty():
             return self.bag_array.pop()
 
-    def is_empty(self):
-        #  Will check if bag size is equal 0, ie. the bag is empty.
-        return len(self.bag_array) == 0
-
     def __getitem__(self, i):
         return self.bag_array[i]
 
     def __iter__(self):
         for tile in self.bag_array:
             yield tile
+
+    def __len__(self):
+        return len(self.bag_array)
+        
+    def is_empty(self):
+        #  Will check if bag size is equal 0, ie. the bag is empty.
+        return len(self.bag_array) == 0
 
     def __str__(self):
         s = ""

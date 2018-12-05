@@ -34,6 +34,9 @@ class Square:
         if self.is_occupied():
             return self.has_tile
 
+    def remove_tile(self, tile):
+    	self.has_tile = None
+
     def place_tile(self, tile):
         self.has_tile = tile
 
@@ -50,7 +53,7 @@ class Square:
 
     def __str__(self):
         tile = "None"
-        line = "--------------"
+        line = "---------------"
         if self.is_occupied():
             tile = self.get_tile().__str__()  # string/print version of Tile object
 

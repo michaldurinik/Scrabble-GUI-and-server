@@ -7,19 +7,19 @@ class Board(Square):
 
     def __init__(self, size=15):
         super().__init__()
-        self.size = size
-        self.square_array = [[Square() for i in range(self.size)] for j in range(self.size)]
+        self._size = size
+        self._square_array = [[Square() for i in range(self._size)] for j in range(self._size)]
 
-        for row in range(self.size):
-            for col in range(self.size):
-                sq = self.square_array[row][col]
+        for row in range(self._size):
+            for col in range(self._size):
+                sq = self._square_array[row][col]
                 sq.position = [row, col]
 
         #   Size of the board correspond to how many rows and columns it will have.
         #   All the squares will be held in an arrays, which will create a matrix.
 
     def __iter__(self):
-        for row in self.square_array:
+        for row in self._square_array:
             for square in row:
                 yield square
 
@@ -28,31 +28,31 @@ class Board(Square):
         #   usage: single int for iterative position or tuple
         #   board[80], board[5][13]
         x, y = self.parse_coords(coords)
-        return self.square_array[x][y]
+        return self._square_array[x][y]
 
     def parse_coords(self, coords):
         if isinstance(coords, int):
-            x = coords // self.size
-            y = coords % self.size
+            x = coords // self._size
+            y = coords % self._size
         else:
             x = coords[0]
             y = coords[1]
 
-        if x < self.size and y < self.size:
+        if x < self._size and y < self._size:
             return x, y
 
     def get_square(self, coords):
         #   usage: single int for iterative position or tuple for x, y
         #   board[80], board[5][13]
         x, y = self.parse_coords(coords)
-        return self.square_array[x][y]
+        return self._square_array[x][y]
 
     def place_tile(self, coords, tile):
         #   coords must be tuple or an array of length 2
         #   Based on square's x, y coordinates, it will place
         #   tile into correct position on the board.
         x, y = self.parse_coords(coords)
-        self.square_array[x][y].place_tile(tile)
+        self._square_array[x][y].place_tile(tile)
 
     def make_board(self):
         #   use with newly created instance of board only (blank boards)
@@ -68,7 +68,7 @@ class Board(Square):
 
         for idx, num_of_bonus_squares in enumerate([double_letter, triple_letter, double_word, triple_word]):
             while num_of_bonus_squares:
-                random_square = self.square_array[randint(0, self.size - 1)][randint(0, self.size - 1)]
+                random_square = self._square_array[randint(0, self._size - 1)][randint(0, self._size - 1)]
 
                 #   changing colour and multipliers for square
                 if random_square.colour == "default":
@@ -83,8 +83,8 @@ class Board(Square):
 
     def __str__(self):
         output = ""
-        line = ("----" * self.size + "-\n")
-        for arr in self.square_array:
+        line = ("----" * self._size + "-\n")
+        for arr in self._square_array:
             output += line
             for sq in arr:
                 if sq.is_occupied():
