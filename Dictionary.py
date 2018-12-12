@@ -2,7 +2,7 @@ class Dictionary:
     
     def __init__(self):
         self.dictionary = {}
-        with open("english_words_94k.txt", "rb") as eng_words:
+        with open("./dictionaries/english_words_94k.txt", "rb") as eng_words:
             for word in eng_words:
                 try:
                     self.dictionary[word.decode("utf-8").strip()] = True
