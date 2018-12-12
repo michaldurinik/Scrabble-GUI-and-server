@@ -26,11 +26,19 @@ class TileRack(Square):
 
     def is_full(self):
         #   Check if the rack has all 7 tiles in it.
-        return len(self.rack_array) == 7
+        #   not if it has 7 square objects, always has
+        for sq in self.rack_array:
+            if sq.get_tile() is None:
+                return False
+        return True        
 
     def is_empty(self):
         #   Check if the rack is empty, if there are no tiles in the rack.
-        return len(self.rack_array) == 0
+        #   not if it has 7 square objects, always has
+        for sq in self.rack_array:
+            if sq.get_tile() is not None:
+                return False
+        return True
 
     def take_tile(self, i):  
         #   index of Tile in rackArray
@@ -59,11 +67,12 @@ def main():
     tile_rack = TileRack()
     print("tiles in the bag: ", len(tile_bag))
     print(tile_rack) 
+    print("tile rack is empty", tile_rack.is_empty())
     print()  
     tile_rack.refill_rack(tile_bag)
     print("tiles in the bag after refilling rack: ", len(tile_bag))
     print(tile_rack)
-
+    print("tile rack is full:", tile_rack.is_full())
 
 if __name__ == "__main__":
     main()
