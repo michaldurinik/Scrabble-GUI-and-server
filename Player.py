@@ -1,10 +1,11 @@
 class Player:
 
-    def __init__(self, id="", name="", score=0, active=True):
+    def __init__(self, id="", name="", score=0, active=True, swaps=1):
         self.ID = id
         self.name = name
         self.score = score
         self.active = active
+        self.swaps = swaps
 
         #   Class will hold information about player,
         #   their unique ID, name and their score.
@@ -53,6 +54,7 @@ class Player:
 
     def get_score(self):
         #   Return player score.
+        print('your score is')
         return self.score
 
 

@@ -22,7 +22,7 @@ class TileRack(Square):
 
     def __getitem__(self, i):
         #   support for indexing
-        return self.square_array[i]
+        return self.rack_array[i]
 
     def is_full(self):
         #   Check if the rack has all 7 tiles in it.
@@ -46,6 +46,9 @@ class TileRack(Square):
         #   removed from an array of tiles and
         #   the size of the rack will be reduced by 1.
         return self.rack_array[i].get_tile()
+
+    def replace_tile(self, tile):
+        pass
 
     def refill_rack(self, tile_bag):
         #   MAKE SURE TO PASS INSTANCE OF THE BAG to take tiles from!!!

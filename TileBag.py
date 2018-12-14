@@ -19,6 +19,12 @@ class TileBag(Tile):
                 self.bag_array.append(Tile(letter, score))
         shuffle(self.bag_array)
 
+    def replace_tiles(self, swapped_tiles):
+        for tile in swapped_tiles:
+            print(tile)
+            self.bag_array.append(Tile(tile[0], tile[1]))
+        shuffle(self.bag_array)
+
     def take_tile(self):
         #   If the bag is not empty,
         #   remove tile from the bag and decrement size of the bag.
@@ -73,8 +79,9 @@ letter_dict = {
         "X": [8, 1],
         "Y": [4, 2],
         "Z": [10, 1],
-        "#": [0, 2],
         }
+        # "#": [0, 2],
+        # }
 
 
 def main():

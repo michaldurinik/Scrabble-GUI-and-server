@@ -56,10 +56,10 @@ class Board(Square):
 
     def make_board(self):
         #   use with newly created instance of board only (blank boards)
-        DL = Tile("DL", 0)
-        TL = Tile("TL", 0)
-        DW = Tile("DW", 0)
-        TW = Tile("TW", 0)
+        doubleL = Tile("doubleL", 0)
+        tripleL = Tile("tripleL", 0)
+        doubleW = Tile("doubleW", 0)
+        tripleW = Tile("tripleW", 0)
 
         bonus_square_colours = ["doubleL", "tripleL", "doubleW", "tripleW"]
         bonus_square_values = [2, 3, 2, 3]
@@ -80,15 +80,15 @@ class Board(Square):
                     if idx // 2:
                         random_square.word_multiplier = bonus_square_values[multiplier]
                         if idx % 2 == 0:
-                            random_square.has_tile = DW
+                            random_square.has_tile = doubleW
                         else:
-                            random_square.has_tile = TW
+                            random_square.has_tile = tripleW
                     else:
                         random_square.tile_multiplier = bonus_square_values[multiplier]
                         if idx % 2 == 0:
-                            random_square.has_tile = DL
+                            random_square.has_tile = doubleL
                         else:
-                            random_square.has_tile = TL
+                            random_square.has_tile = tripleL
 
                     random_square.colour = bonus_square_colours[idx]
                     num_of_bonus_squares -= 1
