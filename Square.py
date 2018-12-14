@@ -35,7 +35,7 @@ class Square:
             return self.has_tile
 
     def remove_tile(self, tile):
-    	self.has_tile = None
+        self.has_tile = None
 
     def place_tile(self, tile):
         self.has_tile = tile

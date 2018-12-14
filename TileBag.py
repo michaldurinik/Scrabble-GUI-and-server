@@ -45,6 +45,7 @@ class TileBag(Tile):
             s += ("[" + tile.__str__() + "]")
         return s
 
+
 letter_dict = {
         "A": [1, 9],
         "B": [3, 2],
@@ -76,12 +77,12 @@ letter_dict = {
         }
 
 
-
 def main():
     tb = TileBag()
     print(tb)
     print(tb.take_tile())
     print(tb)
+
 
 if __name__ == "__main__":
     main()

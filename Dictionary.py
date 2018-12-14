@@ -15,7 +15,7 @@ class Dictionary:
         #   Can be enquired for specific word and it will return
         #   if its valid word or not.
         
-    def checkWord(self, word): 
+    def check_word(self, word):
         #   It will check existence of the word in the dictionary.
         return word.lower() in self.dictionary
 
@@ -24,6 +24,7 @@ def main():
     dic = Dictionary()
     print("'car' in dictionary: ", dic.checkWord("car"))
     print("'xlfsldjdgjf' in dictionary: ", dic.checkWord("xlfsldjdgjf"))
+
 
 if __name__ == "__main__":
     main()

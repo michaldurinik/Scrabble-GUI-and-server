@@ -17,9 +17,12 @@ class Tile:
 
     def __str__(self):
         output = self.letter
-        if len(str(self.value)) == 1:
+        if len(str(self.value)) == 1 and len(self.letter) == 1:
             output += " "
-        output += str(self.value)
+        if len(self.letter) == 1:
+            output += str(self.value)
+        else:
+            output += " "
         return output
 
 
